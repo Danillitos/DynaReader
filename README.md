@@ -61,7 +61,7 @@ Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina *
 | Camada      | Tecnologia |
 |-------------|-------------|
 | **Front-end** | React Native |
-| **Back-end**  | Node.js (Express) |
+| **Back-end**  | Node.js (Nest.js) |
 | **Banco de Dados** | PostgreSQL |
 | **Documentação da API** | Swagger |
 
@@ -71,7 +71,7 @@ Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina *
 
 ```plaintext
 /client         # Aplicativo React Native
-/server         # API Node.js + Express
+/server         # API Nest.js
 /docs           # Diagramas ERD, UML e artefatos
 .env.example    # Exemplo de variáveis de ambiente
 README.md       # Documentação principal
