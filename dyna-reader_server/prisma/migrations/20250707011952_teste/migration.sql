@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "dailyGoal" DROP NOT NULL,
+ALTER COLUMN "streak" DROP NOT NULL,
+ALTER COLUMN "notificationType" DROP NOT NULL,
+ALTER COLUMN "readerType" DROP NOT NULL,
+ALTER COLUMN "averageReading" DROP NOT NULL;

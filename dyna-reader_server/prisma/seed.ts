@@ -9,7 +9,6 @@ async function main() {
         where: { username: "XxPedroxX" },
         update: {},
         create: {
-            name: "Pedro Silva",
             username: "XxPedroxX",
             email: "pedro@example.com",
             password: "pedro123",
@@ -25,7 +24,6 @@ async function main() {
         where: { username: "Vitoria_Dantas12" },
         update: {},
         create: {
-            name: "Vitoria Dantas",
             username: "Vitoria_Dantas12",
             email: "vitoria@example.com",
             password: "vitoria123",
@@ -41,7 +39,6 @@ async function main() {
         where: { username: "Liah" },
         update: {},
         create: {
-            name: "Marilia Teles",
             username: "Liah",
             email: "Liah@example.com",
             password: "Liaha123",

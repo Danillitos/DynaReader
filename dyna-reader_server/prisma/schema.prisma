@@ -16,15 +16,14 @@ datasource db {
 
 model User {
   id             String   @id @default(uuid())
-  name           String
   username       String   @unique
   email          String   @unique
   password       String
-  dailyGoal      Int
-  streak         Int
-  notificationType String
-  readerType     String
-  averageReading Int
+  dailyGoal      Int?
+  streak         Int?
+  notificationType String?
+  readerType     String?
+  averageReading Int?
   progresses     Progress[]
 }
 
