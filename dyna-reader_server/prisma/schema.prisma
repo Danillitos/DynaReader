@@ -14,34 +14,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Dados de usuário
 model User {
-  id             String   @id @default(uuid())
+  id             Int   @id @default(autoincrement())
   username       String   @unique
   email          String   @unique
   password       String
+  isVerified     Boolean  @default(false)
+  verifyToken    String?  @unique
+  createdAt      DateTime @default(now())
+
+  // Relacionamentos
+
+  progress       Progress[]
+  readerData     ReaderData?
+}
+
+// Perfil de leitura do usuário, relação 1:1 com User
+model ReaderData {
+  id             Int   @id @default(autoincrement())
   dailyGoal      Int?
   streak         Int?
   notificationType String?
   readerType     String?
   averageReading Int?
-  progresses     Progress[]
+  User            User @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
+// Livros disponíveis, relação 1:N com Progress
 model Book {
-  id        String    @id @default(uuid())
+  id        Int   @id @default(autoincrement())
   title     String
   author    String
   pages     Int
   progresses Progress[]
 }
 
+// Progresso de leitura do usuário, relação N:1 com User e Book
 model Progress {
-  userID     String
-  bookID     String
+  userID     Int
+  bookID     Int
   pagesRead  Int
   timeSpent  Int
   percentage Int
-
   user User @relation(fields: [userID], references: [id])
   book Book @relation(fields: [bookID], references: [id])
 
