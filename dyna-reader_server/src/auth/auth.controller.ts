@@ -26,5 +26,4 @@ export class AuthController {
         await this.authService.verifyEmail(token);
         return { message: 'E-mail verificado com sucesso!' };
     }
-
 }

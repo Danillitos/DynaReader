@@ -16,13 +16,15 @@ datasource db {
 
 // Dados de usuário
 model User {
-  id             Int   @id @default(autoincrement())
-  username       String   @unique
-  email          String   @unique
-  password       String
-  isVerified     Boolean  @default(false)
-  verifyToken    String?  @unique
-  createdAt      DateTime @default(now())
+  id                   Int   @id @default(autoincrement())
+  username             String   @unique
+  email                String   @unique
+  password             String
+  isVerified           Boolean  @default(false)
+  verifyToken          String?  @unique
+  verifySendAt         DateTime? @default(now())
+  verifyTokenExpiresAt DateTime?
+  createdAt            DateTime @default(now())
 
   // Relacionamentos
 
@@ -57,7 +59,7 @@ model Progress {
   pagesRead  Int
   timeSpent  Int
   percentage Int
-  user User @relation(fields: [userID], references: [id])
+  user User @relation(fields: [userID], references: [id], onDelete: Cascade)
   book Book @relation(fields: [bookID], references: [id])
 
   @@id([userID, bookID])

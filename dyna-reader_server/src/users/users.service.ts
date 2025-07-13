@@ -41,6 +41,8 @@ export class UsersService {
 
         // Gera um token único para verificação de e-mail
         const token = uuidv4();
+        const now = new Date();
+        const expiresIn = new Date(now.getTime() + 24 * 60 * 60 * 1000); // Token válido por 24 horas
 
         // Cria o usuário no banco de dados
         const user = await this.prisma.user.create({
@@ -49,6 +51,8 @@ export class UsersService {
                 email,
                 password: hashedPassword,
                 verifyToken: token,
+                verifySendAt: now,
+                verifyTokenExpiresAt: expiresIn,
             }
         })
 
@@ -58,7 +62,7 @@ export class UsersService {
             id: user.id,
             username: user.username,
             email: user.email,
-            message: 'Usuário criado com sucesso! 🎉',
+            message: 'Usuário criado com sucesso! 🎉 Verifique seu E-mail para confirmação de conta.',
         }
     }
 

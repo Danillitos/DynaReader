@@ -23,6 +23,10 @@ export class MailService {
                 <p>Ola!</p>
                 <p>Obrigado por se registrar no DynaReader! Para completar o processo de registro, por favor, verifique seu e-mail clicando no link abaixo:</p>
                 <a href="${verifyUrl}">Verificar E-mail</a>
+                <p>Atenção: Este link é válido por 24 horas.</p>
+                <p>Se você não se registrou no DynaReader, por favor, ignore este e-mail.</p>
+                <p>Atenciosamente,</p>
+                <p>DynaReader</p>
             `,       
         })
     }
