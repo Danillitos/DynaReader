@@ -10,6 +10,7 @@ import { MailService } from 'src/mail/mail.service';
 export class UsersService {
     constructor(private readonly prisma: PrismaService, private readonly mailService: MailService) {}
 
+    // Serviço para criar um usuário
     async createUserService(createrUserDto: CreaterUserDto) {
         const { email, username, password } = createrUserDto;
 
@@ -59,5 +60,28 @@ export class UsersService {
             email: user.email,
             message: 'Usuário criado com sucesso! 🎉',
         }
+    }
+
+    // Serviço para buscar todos os usuários
+    async findAll() {
+        return await this.prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                email: true,
+            },
+        });
+    }
+
+    // Serviço para buscar um usuário por ID
+    async findOne(id: number) {
+        return this.prisma.user.findMany({
+            where: { id },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+            }
+        })
     }
 }
