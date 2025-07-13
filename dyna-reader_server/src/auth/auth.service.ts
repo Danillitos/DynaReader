@@ -111,7 +111,7 @@ export class AuthService {
         // Verifica se o usuário está verificado
         if (!user.isVerified) {
             await this.resendVerificationEmail(email)
-            throw new UnauthorizedException('Usuário não verificado! Verifique seu e-mail para completar o cadastro.');
+            throw new UnauthorizedException('Usuário não verificado! Um novo pedido de verificação acaba de ser enviado. Por favor, verifique seu e-mail para completar o cadastro.');
         }
 
         // Atribui ao token o ID e o nome de usuário do usuário autenticado
