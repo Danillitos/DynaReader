@@ -132,7 +132,6 @@ export class AuthService {
     generateToken(payLoad: any) {
         const safePayLoad = {
             ...payLoad,
-            roles: Array.isArray(payLoad.roles) ? payLoad.roles : [payLoad.roles],
         }
         return {
             access_token: this.jwtService.sign(safePayLoad),
