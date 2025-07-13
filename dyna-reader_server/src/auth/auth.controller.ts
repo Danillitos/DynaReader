@@ -10,8 +10,8 @@ export class AuthController {
 
     @Throttle({
         default: {
-            ttl: seconds(60),
-            limit: 5
+            ttl: seconds(120),
+            limit: 10
         }
     })
     @Post('login')
