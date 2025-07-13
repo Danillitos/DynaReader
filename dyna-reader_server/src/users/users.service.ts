@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConflictException } from '@nestjs/common';
-import { CreaterUserDto } from './dto/creater-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { MailService } from 'src/mail/mail.service';
@@ -11,7 +11,7 @@ export class UsersService {
     constructor(private readonly prisma: PrismaService, private readonly mailService: MailService) {}
 
     // Serviço para criar um usuário
-    async createUserService(createrUserDto: CreaterUserDto) {
+    async createUserService(createrUserDto: CreateUserDto) {
         const { email, username, password } = createrUserDto;
 
         // Validação simples dos campos
@@ -82,6 +82,33 @@ export class UsersService {
                 username: true,
                 email: true,
             }
+        })
+    }
+
+    async updateUser(id: number, updateUserDto: any) {
+        const { password, ...data } = updateUserDto
+
+        // Verifica se o usuário existe
+        const user = await this.prisma.user.findUnique({
+            where: { id }
+        })
+
+        if (!user) {
+            throw new Error('Usuário não encontrado');
+        }
+
+        // Pega os dados a serem atualizados
+        const dataToUpdate: any = { ...data }
+
+        // Salva a nova senha criptografada, se fornecida
+        if (password) {
+            const saltRounds = 10;
+            dataToUpdate.password = await bcrypt.hash(password, saltRounds);
+        }
+
+        return await this.prisma.user.update({
+            where: { id },
+            data: dataToUpdate,
         })
     }
 
