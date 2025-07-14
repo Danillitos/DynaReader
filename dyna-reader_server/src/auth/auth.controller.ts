@@ -3,7 +3,9 @@ import { AuthService } from './auth.service';
 import { UserLoginDto } from './dto/userLogin.dto';
 import { Response } from 'express';
 import { seconds, Throttle } from '@nestjs/throttler';
-import { ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { ForgotPasswordDto } from './dto/forgotPassword.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -64,8 +66,62 @@ export class AuthController {
         },
         },
     })
-    async verifyEmail(@Query('token') token: string, @Res() res: Response) {
+    async verifyEmail(@Query('token') token: string) {
         await this.authService.verifyEmail(token);
         return { message: 'E-mail verificado com sucesso!' };
+    }
+
+    @Post('forgot-password')
+    @ApiOperation({ summary: 'Solicitar redefinição de senha' })
+    @ApiBody({
+        description: 'E-mail do usuário para envio do link de redefinição de senha',
+        type: ForgotPasswordDto,
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Se o e-mail estiver cadastrado, o link de redefinição é enviado',
+        schema: {
+        example: {
+            message: 'Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.'
+        },
+        },
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'E-mail inválido ou mal formatado',
+    })
+    async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+        await this.authService.forgotPassword(forgotPasswordDto)
+        return { message: 'Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.'}
+    }
+
+
+    
+    @Post('reset-password')
+    @ApiOperation({ summary: 'Resetar senha com token' })
+    @ApiBody({
+        description: 'Token de redefinição + nova senha',
+        type: ResetPasswordDto,
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Senha redefinida com sucesso',
+        schema: {
+        example: {
+            message: 'Senha redefinida com sucesso!',
+        },
+        },
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Token inválido ou expirado',
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Senha não atende requisitos mínimos',
+    })
+    async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+        await this.authService.resetPassword(resetPasswordDto)
+        return { message: 'Senha redefinida com sucesso! 🚀'}
     }
 }

@@ -20,11 +20,18 @@ model User {
   username             String   @unique
   email                String   @unique
   password             String
-  isVerified           Boolean  @default(false)
+
   verifyToken          String?  @unique
-  verifySendAt         DateTime? @default(now())
+  verifySendAt         DateTime?
   verifyTokenExpiresAt DateTime?
+
+  resetToken           String? @unique
+  resetTokenExpiresAt  DateTime?
+  resetSendAt          DateTime?
+
+  isVerified           Boolean  @default(false)
   createdAt            DateTime @default(now())
+  updatedAt            DateTime? @updatedAt
 
   // Relacionamentos
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { from, Subject } from 'rxjs';
 
 @Injectable()
 export class MailService {
@@ -13,7 +14,7 @@ export class MailService {
     })
 
     async sendVerificationEmail(to: string, token: string) {
-        const verifyUrl = `${process.env.APP_URL}/auth/verify-email?token=${token}`
+        const verifyUrl = `https://${process.env.APP_URL}/auth/verify-email?token=${token}`
 
         await this.transporter.sendMail({
             from: '"DynaReader" <no-reply@dynareader.com>',
@@ -29,5 +30,25 @@ export class MailService {
                 <p>DynaReader</p>
             `,       
         })
+    }
+
+    async ChangePasswordEmail(to: string, token: string) {
+        const forgotPasswordUrl = `https://${process.env.APP_URL}/auth/forgot-password?token=${token}`
+
+        await this.transporter.sendMail({
+            from: '"DynaReader" <no-reply@dynareader.com>',
+            to,
+            Subject: 'DynaReader - Esqueci minha senha',
+            html: `
+                <p>Ola!</p>
+                <p>Parece que está tendo dificuldades para acessar sua conta DynaReader. Clique no link abaixo para alterar sua senha.</p>
+                <a href="${forgotPasswordUrl}">Alterar senha</a>
+                <p>Atenção: Este link é válido por 1 hora.</p>
+                <p>Se você não solicitou uma troca de senha, por favor, ignore este e-mail.</p>
+                <p>Atenciosamente,</p>
+                <p>DynaReader</p>
+            `
+        })
+
     }
 }

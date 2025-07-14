@@ -32,6 +32,7 @@ async function main() {
             username: "Liah",
             email: "Liah@example.com",
             password: "Liaha123",
+            
         }
     });
 }
