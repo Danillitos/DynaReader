@@ -70,11 +70,11 @@ Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina *
 ## 📂 Estrutura do Projeto
 
 ```plaintext
-/client         # Aplicativo React Native
-/server         # API Nest.js
-/docs           # Diagramas ERD, UML e artefatos
-.env.example    # Exemplo de variáveis de ambiente
-README.md       # Documentação principal
+/client                     # Aplicativo React Native
+/dyna-reader_server         # API Nest.js
+/docs                       # Diagramas ERD, UML e artefatos
+.env.example                # Exemplo de variáveis de ambiente
+README.md                   # Documentação principal
 ```
 
 ---
@@ -95,16 +95,7 @@ README.md       # Documentação principal
 
 ## 🔗 Documentação da API
 
-> [🚀 Swagger - Acesse aqui](Em breve!)
-
----
-
-## 🚧 Desafios
-
-- Motivar o público em uma era de distrações.
-- Manter a fluidez do leitor de PDF.
-- Converter usuários curiosos em leitores constantes.
-- Escalabilidade para integração com serviços de nuvem.
+> [🚀 Swagger - Acesse aqui](http://localhost:3000/api)
 
 ---
 
@@ -115,7 +106,7 @@ README.md       # Documentação principal
 git clone https://github.com/Danillitos/dynareader
 
 # Instale dependências do backend
-cd server
+cd dyna-reader_server
 npm install
 
 # Instale dependências do frontend
@@ -123,7 +114,7 @@ cd ../client
 npm install
 
 # Rode o backend
-npm run dev
+npm run start:dev
 
 # Rode o frontend
 ```
