@@ -97,6 +97,8 @@ README.md                   # Documentação principal
 
 > [🚀 Swagger - Acesse aqui](http://localhost:3000/api)
 
+Obs: O back precisa está rodando
+
 ---
 
 ## ✅ Como Rodar Localmente
