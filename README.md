@@ -119,7 +119,10 @@ npm install
 npm run start:dev
 
 # Rode o frontend
+npx expo start
+
 ```
+Obs: Configure seu .env seguindo o .env.example antes de rodar o backend
 
 ---
 
