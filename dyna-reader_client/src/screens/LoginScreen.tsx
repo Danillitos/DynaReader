@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity } from 'react-native'
+import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../types'
 import { loginUser } from '../services/userService'
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const [fontsLoaded] = useFonts({
+        Montserrat_400Regular,
+        Montserrat_700Bold,
+    })
+    type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>
+    const navigation = useNavigation<NavigationProp>()
 
     const handleLogin = async() => {
         // Verifica se os campos estão preenchidos
@@ -73,7 +83,7 @@ export default function LoginScreen() {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => Alert.alert('Recuperação de senha', 'Funcionalidade ainda não implementada')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
                 <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
             </TouchableOpacity>
             
@@ -118,14 +128,15 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         paddingBottom: 50,
-        fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
+        fontFamily: 'Montserrat_700Bold',
     },
     SecLabels: {
         fontSize: 16,
         marginBottom: 5,
         textAlign: 'center',
+        fontFamily: 'Montserrat_400Regular',
     },
     input: {
         height: 40,
@@ -155,7 +166,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         color: '#5E3267',
         fontSize: 16,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        fontFamily: 'Montserrat_400Regular',
 
     },
     button: {
@@ -174,6 +186,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'black',
         fontSize: 16,
+        fontFamily: 'Montserrat_400Regular',
     },
     logoImage: {
         width: 150,
@@ -197,6 +210,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         fontSize: 16,
         color: '#414A40',
+        fontFamily: 'Montserrat_400Regular',
     },
     iconRow: {
         flexDirection: 'row',
