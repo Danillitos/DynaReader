@@ -1,0 +1,230 @@
+import React, { useState } from 'react'
+import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity } from 'react-native'
+import { loginUser } from '../services/userService'
+
+export default function LoginScreen() {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordVisible, setPasswordVisible] = useState(false)
+
+    const handleLogin = async() => {
+        // Verifica se os campos estão preenchidos
+        if (!email || !password) {
+            Alert.alert('Erro', 'Por favor, preencha todos os campos.')
+            return
+        }
+
+        // Tenta realizar o login
+        try {
+            const response = await loginUser(email, password)
+            console.log(response.data)
+            Alert.alert('Sucesso', 'Login realizado com sucesso!')
+        }
+        // Pega os erros enviados pelo servidor
+        catch (error: any) {
+            console.error('Erro ao realizar login:', error)
+            
+            if (error.response) {
+                const status = error.response.status
+                const message = error.response.data?.message || 'Erro desconhecido'
+
+                Alert.alert(`Erro ${status}`, Array.isArray(message) ? message.join(','): message)
+            }
+            else if (error.request) {
+                Alert.alert('Erro', 'Não foi possível conectar ao servidor. Verifique sua conexão de internet.')
+            }
+            else {
+                Alert.alert('Erro', 'Ocorreu um erro inesperado. Tente novamente mais tarde.')}
+        }
+    }
+
+    return (
+        <View style={styles.container}>
+            <Image
+                source={require('../assets/logo.png')}
+                style={styles.logoImage}
+            />
+            <Text style={styles.title}>DynaReader</Text>
+
+            <Text style={styles.SecLabels}>E-mail:</Text>
+
+            <TextInput
+                style={styles.input}
+                autoCapitalize='none'
+                keyboardType='email-address'
+                onChangeText={setEmail}
+                value={email}
+            />
+
+            
+            <Text style={styles.SecLabels}>Senha:</Text>
+
+            <TextInput
+                style={styles.passwordInput}
+                secureTextEntry={!passwordVisible}
+                onChangeText={setPassword}
+                value={password}
+            />
+
+            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                <Image
+                    source={passwordVisible ? require('../assets/eye-on.png') : require('../assets/eye-off.png')}
+                    style={{ width: 20, height: 20, position: 'absolute', right: 40, top: -31 }}
+                />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => Alert.alert('Recuperação de senha', 'Funcionalidade ainda não implementada')}>
+                <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
+            </TouchableOpacity>
+            
+
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                <Text style={styles.buttonText}>Entrar/Criar Conta</Text> 
+            </TouchableOpacity>
+
+            <View style={styles.dividerContainer}>
+                <View style={styles.line}/>
+                <Text style={styles.ouText}>Ou</Text>
+                <View style={styles.line}/>
+            </View>
+
+            <View style={styles.iconRow}>
+                <TouchableOpacity style={styles.iconButton}>
+                    <Image
+                        source={require('../assets/Google_logo.png')}
+                        style={styles.iconImage}
+                    />
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={styles.iconButton}>
+                    <Image
+                        source={require('../assets/Dropbox_logo.png')}
+                        style={styles.iconImage}
+                    />
+                </TouchableOpacity>
+            </View>
+
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+    },
+    title: {
+        fontSize: 24,
+        paddingBottom: 50,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    SecLabels: {
+        fontSize: 16,
+        marginBottom: 5,
+        textAlign: 'center',
+    },
+    input: {
+        height: 40,
+        width: '85%',
+        alignSelf: 'center',
+        borderColor: '#414A40',
+        backgroundColor: '#D9D9D9',
+        borderWidth: 1,
+        marginBottom: 15,
+        paddingHorizontal: 10,
+        borderRadius: 17,
+    },
+    passwordInput: {
+        height: 40,
+        width: '85%',
+        alignSelf: 'center',
+        borderColor: '#414A40',
+        backgroundColor: '#D9D9D9',
+        borderWidth: 1,
+        marginBottom: 1,
+        paddingHorizontal: 10,
+        borderRadius: 17, 
+    },
+    forgotPassword: {
+        alignSelf: 'flex-end',
+        paddingRight: 30,
+        marginBottom: 20,
+        color: '#5E3267',
+        fontSize: 16,
+        textDecorationLine: 'underline'
+
+    },
+    button: {
+        marginTop: 20,
+        width: '50%',
+        height: 50,
+        alignSelf: 'center',
+        backgroundColor: '#C7C7C7',
+        borderWidth: 1,
+        borderColor: '#414A40',
+        padding: 10,
+        borderRadius: 17,
+        elevation: 3,
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: 'black',
+        fontSize: 16,
+    },
+    logoImage: {
+        width: 150,
+        height: 150,
+        alignSelf: 'center',
+        tintColor: '#414A40',
+    },
+    dividerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: 20,
+        marginTop: 25,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#414A40',
+    },
+    ouText: {
+        marginHorizontal: 10,
+        fontSize: 16,
+        color: '#414A40',
+    },
+    iconRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 20,
+    },
+    iconButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 15,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 3,
+    },
+    iconImage: {
+        width: 30,
+        height: 30,
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#D9D9D9',
+        borderWidth: 1,
+        borderColor: '#414A40',
+        borderRadius: 17,
+        height: 40,
+        paddingHorizontal: 10,
+    }
+
+})
