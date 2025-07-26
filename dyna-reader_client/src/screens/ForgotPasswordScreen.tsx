@@ -5,14 +5,54 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { SafeAreaView } from "react-native";
 import { RootStackParamList } from "../types";
+import { forgotPassword } from "../services/userService";
 
 export default function ForgotPasswordScreen() {
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState<'error' | 'success' | ''>('')
+
+
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPasswordScreen'>
     const navigation = useNavigation()
 
+    const handleForgotPassword = async() => {
+
+        if (!email) {
+            setMessage('Por favor, informe seu endereço de email.')
+            setMessageType('error')
+        }
+
+        try {
+            const response = await forgotPassword(email)
+            console.log(response.data)
+            setMessage('Email enviado com sucesso! Por favor, verifique sua caixa de entrada ou spam.')
+            setMessageType('success')
+        }
+        catch (error: any) {
+            console.error('Erro ao realizar procedimento de recuperação de senha:', error)
+            
+            if (error.response) {
+                const status = error.response.status
+                const messageText = error.response.data?.message || 'Erro desconhecido'
+
+                setMessage(Array.isArray(messageText) ? messageText.join(',') : messageText)
+                setMessageType('error')
+            }
+            else if (error.request) {
+                setMessage('Não foi possível conectar ao servidor. Verifique sua conexão de internet.')
+                setMessageType('error')
+            }
+            else {
+                setMessage('Ocorrou um erro inesperado. Tente novamente mais tarde.')
+                setMessageType('error')
+            }
+        }
+
+    }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F0' }}>
             <View style={styles.container}>
 
             
@@ -35,6 +75,14 @@ export default function ForgotPasswordScreen() {
                 Por favor, insira seu E-mail abaixo e enviaremos um link para alterar sua senha.
             </Text>
 
+            {message ? (
+                <Text style={[
+                    styles.messageText,
+                    messageType === 'error' ? styles.errorText : styles.successText
+
+                ]}>{message}</Text>
+            ): null}
+
             <Text style={styles.SecLabels}>E-mail:</Text>
 
             <TextInput
@@ -42,9 +90,11 @@ export default function ForgotPasswordScreen() {
                 autoCapitalize='none'
                 placeholder="seuemail@example.com"
                 keyboardType='email-address'
+                onChangeText={setEmail}
+                value={email}
             />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
                 <Text style={styles.buttonText}>Enviar Link</Text> 
             </TouchableOpacity>
 
@@ -116,5 +166,18 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
         fontFamily: 'Montserrat_400Regular',
+    },
+    messageText: {
+        textAlign: 'center',
+        fontSize: 14,
+        marginVertical: 10,
+        paddingHorizontal: 20,
+        fontFamily: 'Montserrat_400Regular',
+    },
+    errorText: {
+        color: '#B00020',
+    },
+    successText: {
+        color: '#2E7D32',
     },
 })

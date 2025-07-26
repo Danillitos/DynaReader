@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity, SafeAreaView } from 'react-native'
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -8,19 +8,19 @@ import { loginUser } from '../services/userService'
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState<'error' | 'success' | ''>('')
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false)
-    const [fontsLoaded] = useFonts({
-        Montserrat_400Regular,
-        Montserrat_700Bold,
-    })
+
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>
     const navigation = useNavigation<NavigationProp>()
 
     const handleLogin = async() => {
         // Verifica se os campos estão preenchidos
         if (!email || !password) {
-            Alert.alert('Erro', 'Por favor, preencha todos os campos.')
+            setMessage('Por favor, preencha todos os campos para realizar o login.')
+            setMessageType('error')
             return
         }
 
@@ -28,7 +28,8 @@ export default function LoginScreen() {
         try {
             const response = await loginUser(email, password)
             console.log(response.data)
-            Alert.alert('Sucesso', 'Login realizado com sucesso!')
+            setMessage('Login realizado com sucesso!')
+            setMessageType('success')
         }
         // Pega os erros enviados pelo servidor
         catch (error: any) {
@@ -36,88 +37,102 @@ export default function LoginScreen() {
             
             if (error.response) {
                 const status = error.response.status
-                const message = error.response.data?.message || 'Erro desconhecido'
+                const messageText = error.response.data?.message || 'Erro desconhecido'
 
-                Alert.alert(`Erro ${status}`, Array.isArray(message) ? message.join(','): message)
+                setMessage(Array.isArray(messageText) ? messageText.join(',') : messageText)
+                setMessageType('error')
             }
             else if (error.request) {
-                Alert.alert('Erro', 'Não foi possível conectar ao servidor. Verifique sua conexão de internet.')
+                setMessage('Não foi possível conectar ao servidor. Verifique sua conexão de internet.')
+                setMessageType('error')
             }
             else {
-                Alert.alert('Erro', 'Ocorreu um erro inesperado. Tente novamente mais tarde.')}
+                setMessage('Ocorrou um erro inesperado. Tente novamente mais tarde.')
+                setMessageType('error')
+            }
         }
     }
 
     return (
-        <View style={styles.container}>
-            <Image
-                source={require('../assets/logo.png')}
-                style={styles.logoImage}
-            />
-            <Text style={styles.title}>DynaReader</Text>
-
-            <Text style={styles.SecLabels}>E-mail:</Text>
-
-            <TextInput
-                style={styles.input}
-                placeholder='seuemail@exemplo.com'
-                autoCapitalize='none'
-                keyboardType='email-address'
-                onChangeText={setEmail}
-                value={email}
-            />
-
-            
-            <Text style={styles.SecLabels}>Senha:</Text>
-
-            <TextInput
-                style={styles.passwordInput}
-                secureTextEntry={!passwordVisible}
-                placeholder='Digite sua senha'
-                onChangeText={setPassword}
-                value={password}
-            />
-
-            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F0' }}>
+            <View style={styles.container}>
                 <Image
-                    source={passwordVisible ? require('../assets/eye-on.png') : require('../assets/eye-off.png')}
-                    style={{ width: 20, height: 20, position: 'absolute', right: 40, top: -31 }}
+                    source={require('../assets/logo.png')}
+                    style={styles.logoImage}
                 />
-            </TouchableOpacity>
+                <Text style={styles.title}>DynaReader</Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-                <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
-            </TouchableOpacity>
-            
+                {message ? (
+                    <Text style={[
+                        styles.messageText,
+                        messageType === 'error' ? styles.errorText : styles.successText
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Entrar/Criar Conta</Text> 
-            </TouchableOpacity>
+                    ]}>{message}</Text>
+                ): null}
 
-            <View style={styles.dividerContainer}>
-                <View style={styles.line}/>
-                <Text style={styles.ouText}>Ou</Text>
-                <View style={styles.line}/>
-            </View>
+                <Text style={styles.SecLabels}>E-mail:</Text>
 
-            <View style={styles.iconRow}>
-                <TouchableOpacity style={styles.iconButton}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='seuemail@exemplo.com'
+                    autoCapitalize='none'
+                    keyboardType='email-address'
+                    onChangeText={setEmail}
+                    value={email}
+                />
+
+                
+                <Text style={styles.SecLabels}>Senha:</Text>
+
+                <TextInput
+                    style={styles.passwordInput}
+                    secureTextEntry={!passwordVisible}
+                    placeholder='Digite sua senha'
+                    onChangeText={setPassword}
+                    value={password}
+                />
+
+                <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
                     <Image
-                        source={require('../assets/Google_logo.png')}
-                        style={styles.iconImage}
+                        source={passwordVisible ? require('../assets/eye-on.png') : require('../assets/eye-off.png')}
+                        style={{ width: 20, height: 20, position: 'absolute', right: 40, top: -31 }}
                     />
                 </TouchableOpacity>
 
-
-                <TouchableOpacity style={styles.iconButton}>
-                    <Image
-                        source={require('../assets/Dropbox_logo.png')}
-                        style={styles.iconImage}
-                    />
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                    <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
                 </TouchableOpacity>
-            </View>
+                
 
-        </View>
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Entrar/Criar Conta</Text> 
+                </TouchableOpacity>
+
+                <View style={styles.dividerContainer}>
+                    <View style={styles.line}/>
+                    <Text style={styles.ouText}>Ou</Text>
+                    <View style={styles.line}/>
+                </View>
+
+                <View style={styles.iconRow}>
+                    <TouchableOpacity style={styles.iconButton}>
+                        <Image
+                            source={require('../assets/Google_logo.png')}
+                            style={styles.iconImage}
+                        />
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity style={styles.iconButton}>
+                        <Image
+                            source={require('../assets/Dropbox_logo.png')}
+                            style={styles.iconImage}
+                        />
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -130,9 +145,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        paddingBottom: 50,
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 50,
         fontFamily: 'Montserrat_700Bold',
     },
     SecLabels: {
@@ -242,6 +256,18 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         height: 40,
         paddingHorizontal: 10,
-    }
-
-})
+    },
+    messageText: {
+        textAlign: 'center',
+        fontSize: 14,
+        marginVertical: 10,
+        paddingHorizontal: 20,
+        fontFamily: 'Montserrat_400Regular',
+    },
+    errorText: {
+        color: '#B00020',
+    },
+    successText: {
+        color: '#2E7D32',
+    },
+});

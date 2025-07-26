@@ -9,3 +9,13 @@ export const loginUser = async (email: string, password: string) => {
         throw error
     }
 }
+
+export const forgotPassword = async (email: string) => {
+    try {
+        const response = await api.post('auth/forgot-password', {email})
+        return response
+    }
+    catch (error) {
+        throw error
+    }
+}
