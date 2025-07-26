@@ -60,6 +60,7 @@ export default function LoginScreen() {
 
             <TextInput
                 style={styles.input}
+                placeholder='seuemail@exemplo.com'
                 autoCapitalize='none'
                 keyboardType='email-address'
                 onChangeText={setEmail}
@@ -72,6 +73,7 @@ export default function LoginScreen() {
             <TextInput
                 style={styles.passwordInput}
                 secureTextEntry={!passwordVisible}
+                placeholder='Digite sua senha'
                 onChangeText={setPassword}
                 value={password}
             />
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 20,
+        backgroundColor: '#F2F2F0'
     },
     title: {
         fontSize: 24,

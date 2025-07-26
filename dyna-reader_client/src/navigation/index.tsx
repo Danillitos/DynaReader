@@ -16,8 +16,8 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+                <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ animation: 'none' }} />
+                <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ animation: 'none' }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
