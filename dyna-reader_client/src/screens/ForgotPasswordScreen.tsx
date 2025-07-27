@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity } from "react-native";
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { SafeAreaView } from "react-native";
 import { RootStackParamList } from "../types";
 import { forgotPassword } from "../services/userService";
+import LottieView from 'lottie-react-native'
 
 export default function ForgotPasswordScreen() {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [messageType, setMessageType] = useState<'error' | 'success' | ''>('')
+    const [isloading, setIsLoading] = useState(false)
 
 
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPasswordScreen'>
     const navigation = useNavigation()
 
     const handleForgotPassword = async() => {
+        setIsLoading(true)
 
         if (!email) {
             setMessage('Por favor, informe seu endereço de email.')
@@ -47,6 +49,9 @@ export default function ForgotPasswordScreen() {
                 setMessage('Ocorrou um erro inesperado. Tente novamente mais tarde.')
                 setMessageType('error')
             }
+        }
+        finally {
+            setIsLoading(false)
         }
 
     }
@@ -97,6 +102,19 @@ export default function ForgotPasswordScreen() {
             <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
                 <Text style={styles.buttonText}>Enviar Link</Text> 
             </TouchableOpacity>
+
+            {isloading && (
+                <View style={styles.loadingContainer}>
+                    <LottieView
+                        source={require('../assets/animations/Trail-loading.json')}
+                        autoPlay
+                        loop
+                        style={styles.loadingIcon}
+                    />
+                    <Text style={styles.loadingText}>Carregando...</Text>
+                </View>
+
+            )}
 
             </View>
         </SafeAreaView>
@@ -180,4 +198,22 @@ const styles = StyleSheet.create({
     successText: {
         color: '#2E7D32',
     },
+    loadingContainer: {
+        position: 'absolute',
+        top: '100%',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingIcon: {
+        width: 60,
+        height: 60,
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 14,
+        color: '#414A40',
+        fontFamily: 'Montserrat_400Regular',
+        textAlign: 'center',
+    }
 })

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity, SafeAreaView } from 'react-native'
-import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types'
 import { loginUser } from '../services/userService'
+import LottieView from 'lottie-react-native'
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('')
@@ -12,15 +12,19 @@ export default function LoginScreen() {
     const [messageType, setMessageType] = useState<'error' | 'success' | ''>('')
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const [isloading, setIsLoading] = useState(false)
 
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>
     const navigation = useNavigation<NavigationProp>()
 
     const handleLogin = async() => {
+        setIsLoading(true)
+
         // Verifica se os campos estão preenchidos
         if (!email || !password) {
             setMessage('Por favor, preencha todos os campos para realizar o login.')
             setMessageType('error')
+            setIsLoading(false)
             return
         }
 
@@ -51,6 +55,9 @@ export default function LoginScreen() {
                 setMessageType('error')
             }
         }
+        finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -61,6 +68,17 @@ export default function LoginScreen() {
                     style={styles.logoImage}
                 />
                 <Text style={styles.title}>DynaReader</Text>
+
+                {isloading && (
+                    <View style={styles.loadingContainer}>
+                        <LottieView
+                            source={require('../assets/animations/Trail-loading.json')}
+                            autoPlay
+                            loop
+                            style={styles.loadingIcon}
+                        />
+                    </View>
+                )}
 
                 {message ? (
                     <Text style={[
@@ -105,7 +123,7 @@ export default function LoginScreen() {
                 
 
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Entrar/Criar Conta</Text> 
+                    <Text style={styles.buttonText}>Entrar</Text> 
                 </TouchableOpacity>
 
                 <View style={styles.dividerContainer}>
@@ -113,6 +131,10 @@ export default function LoginScreen() {
                     <Text style={styles.ouText}>Ou</Text>
                     <View style={styles.line}/>
                 </View>
+
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                    <Text style={styles.signUp}>Criar Conta</Text>
+                </TouchableOpacity>
 
                 <View style={styles.iconRow}>
                     <TouchableOpacity style={styles.iconButton}>
@@ -130,7 +152,6 @@ export default function LoginScreen() {
                         />
                     </TouchableOpacity>
                 </View>
-
             </View>
         </SafeAreaView>
     )
@@ -146,7 +167,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         textAlign: 'center',
-        marginBottom: 50,
+        marginBottom: 45,
         fontFamily: 'Montserrat_700Bold',
     },
     SecLabels: {
@@ -185,7 +206,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textDecorationLine: 'underline',
         fontFamily: 'Montserrat_400Regular',
-
     },
     button: {
         marginTop: 20,
@@ -269,5 +289,22 @@ const styles = StyleSheet.create({
     },
     successText: {
         color: '#2E7D32',
+    },
+    signUp: {
+        alignSelf: 'center',
+        marginBottom: 20,
+        color: '#5E3267',
+        fontSize: 16,
+        textDecorationLine: 'underline',
+        fontFamily: 'Montserrat_400Regular',
+    },
+        loadingContainer: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingIcon: {
+        width: 60,
+        height: 60,
     },
 });
