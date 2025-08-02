@@ -33,16 +33,17 @@ export class MailService {
     }
 
     async ChangePasswordEmail(to: string, token: string) {
-        const forgotPasswordUrl = `https://${process.env.APP_URL}/auth/forgot-password?token=${token}`
+        const forgotPasswordUrl = `dynareader://reset-password?token=${token}`
 
         await this.transporter.sendMail({
             from: '"DynaReader" <no-reply@dynareader.com>',
             to,
-            Subject: 'DynaReader - Esqueci minha senha',
+            subject: 'DynaReader - Esqueci minha senha',
             html: `
-                <p>Ola!</p>
-                <p>Parece que está tendo dificuldades para acessar sua conta DynaReader. Clique no link abaixo para alterar sua senha.</p>
+                <p>Olá!</p>
+                <p>Parece que você está tendo dificuldades para acessar sua conta DynaReader. Clique no link abaixo para alterar sua senha.</p>
                 <a href="${forgotPasswordUrl}">Alterar senha</a>
+                <p>Caso o botão acima não funcionar, insira esse link em seu navegador: dynareader://reset-password?token=${token}</p>
                 <p>Atenção: Este link é válido por 1 hora.</p>
                 <p>Se você não solicitou uma troca de senha, por favor, ignore este e-mail.</p>
                 <p>Atenciosamente,</p>

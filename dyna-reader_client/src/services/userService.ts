@@ -19,3 +19,14 @@ export const forgotPassword = async (email: string) => {
         throw error
     }
 }
+
+export const signUp = async (email: string, username: string, password: string) => {
+    try {
+        const response = await api.post('users/signup', {email, username, password})
+        return response
+    }
+    catch (error) {
+        throw error
+    }
+
+}

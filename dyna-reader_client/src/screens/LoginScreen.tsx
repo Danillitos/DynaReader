@@ -132,7 +132,7 @@ export default function LoginScreen() {
                     <View style={styles.line}/>
                 </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
                     <Text style={styles.signUp}>Criar Conta</Text>
                 </TouchableOpacity>
 
