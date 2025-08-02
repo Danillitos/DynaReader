@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -15,7 +15,7 @@ export default function ForgotPasswordScreen() {
 
 
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPasswordScreen'>
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp>()
 
     const handleForgotPassword = async() => {
         setIsLoading(true)
@@ -23,6 +23,8 @@ export default function ForgotPasswordScreen() {
         if (!email) {
             setMessage('Por favor, informe seu endereço de email.')
             setMessageType('error')
+            setIsLoading(false)
+            return
         }
 
         try {
@@ -30,6 +32,7 @@ export default function ForgotPasswordScreen() {
             console.log(response.data)
             setMessage('Email enviado com sucesso! Por favor, verifique sua caixa de entrada ou spam.')
             setMessageType('success')
+            navigation.replace('CodeInsertScreen')
         }
         catch (error: any) {
             console.error('Erro ao realizar procedimento de recuperação de senha:', error)
