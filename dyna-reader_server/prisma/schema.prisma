@@ -25,8 +25,8 @@ model User {
   verifySendAt         DateTime?
   verifyTokenExpiresAt DateTime?
 
-  resetCode            String? @unique
-  resetCodeExpiresAt   DateTime?
+  resetToken           String? @unique
+  resetTokenExpiresAt  DateTime?
   resetSendAt          DateTime?
 
   isVerified           Boolean  @default(false)

@@ -151,30 +151,30 @@ export class AuthService {
             return { message: 'Se o e-mail existir, um link de redefinição será enviado.'}
         }
 
-        const verifyCode = this.generateVerificationCode()
+        const resetToken = uuidv4()
         const expires = new Date(Date.now() + 1000 * 60 * 60)
 
         await this.prisma.user.update({
             where: { id: user.id },
             data: {
-                resetCode: verifyCode,
-                resetCodeExpiresAt: expires
+                resetToken,
+                resetTokenExpiresAt: expires
             }
         })
 
-        await this.mailService.ChangePasswordEmail(email, verifyCode)
+        await this.mailService.ChangePasswordEmail(email, resetToken)
 
         return { message: 'Verifique seu E-mail para redefinir sua senha.'}
         
     }
 
     async resetPassword(resetPasswordDto) {
-        const { code, newPassword } = resetPasswordDto
+        const { token, newPassword } = resetPasswordDto
 
         const user = await this.prisma.user.findFirst({
             where: {
-                resetCode: code,
-                resetCodeExpiresAt: {
+                resetToken: token,
+                resetTokenExpiresAt: {
                     gt: new Date()
                 }
             }
@@ -191,27 +191,11 @@ export class AuthService {
             where: { id: user.id },
             data: {
                 password: hashedPassword,
-                resetCode: null,
-                resetCodeExpiresAt: null
+                resetToken: null,
+                resetTokenExpiresAt: null
             }
         })
 
         return { message: 'Senha redefinida com sucesso! 🚀'}
-    }
-
-    private generateVerificationCode(length = 5): string {
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUWXYZ1234567890'
-        let verifyCode: string[] = []
-
-        while (verifyCode.length < length) {
-            let randomDigit = letters[Math.floor(Math.random() * letters.length)]
-            if (!verifyCode.includes(randomDigit)) {
-                verifyCode.push(randomDigit)
-            }
-        }
-        
-        const verifyCodeConsolidated = Array.from(verifyCode).join('')
-
-        return verifyCodeConsolidated
     }
 }

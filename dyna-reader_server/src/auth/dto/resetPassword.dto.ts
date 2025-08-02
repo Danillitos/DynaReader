@@ -4,12 +4,12 @@ import { IsNotEmpty, IsString, MinLength, Matches } from "class-validator";
 export class ResetPasswordDto {
 
     @ApiProperty({
-        description: 'Código de troca de senha.',
-        example: 'GH79'
+        description: 'Token de troca de senha.',
+        example: '1a2b3c4d-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
     })
     @IsNotEmpty({ message: 'A senha não pode estar vazia.' })
     @IsString()
-    code: string
+    token: string
 
     @ApiProperty({
         description: 'Senha do usuário',
