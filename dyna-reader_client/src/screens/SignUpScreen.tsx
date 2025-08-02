@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, StyleSheet, Alert, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
+import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { SafeAreaView } from "react-native";
@@ -11,6 +11,7 @@ export default function SignUpScreen() {
     const [message, setMessage] = useState('')
     const [messageType, setMessageType] = useState<'error' | 'success' | ''>('')
     const [isloading, setIsLoading] = useState(false)
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -168,6 +169,7 @@ export default function SignUpScreen() {
 
                     <TextInput
                         style={styles.input}
+                        secureTextEntry={!passwordVisible}
                         autoCapitalize='none'
                         placeholder="Insira sua senha"
                         keyboardType='default'
@@ -175,16 +177,31 @@ export default function SignUpScreen() {
                         value={password}
                     />
 
+                    <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                        <Image
+                            source={passwordVisible ? require('../assets/eye-on.png') : require('../assets/eye-off.png')}
+                            style={{ width: 20, height: 20, position: 'absolute', right: 40, top: -45 }}
+                        />
+                    </TouchableOpacity>
+
                     <Text style={styles.SecLabels}>Confirme sua senha:</Text>
 
                     <TextInput
                         style={styles.input}
+                        secureTextEntry={!passwordVisible}
                         autoCapitalize='none'
                         placeholder="Confirme sua senha"
                         keyboardType='default'
                         onChangeText={setConfirmPassword}
                         value={confirmPassword}
                     />
+
+                    <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                        <Image
+                            source={passwordVisible ? require('../assets/eye-on.png') : require('../assets/eye-off.png')}
+                            style={{ width: 20, height: 20, position: 'absolute', right: 40, top: -45 }}
+                        />
+                    </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                         <Text style={styles.buttonText}>Criar conta</Text> 
