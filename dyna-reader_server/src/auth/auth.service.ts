@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserLoginDto } from './dto/userLogin.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -112,7 +112,7 @@ export class AuthService {
         // Verifica se o usuário está verificado
         if (!user.isVerified) {
             await this.resendVerificationEmail(email)
-            throw new UnauthorizedException('Usuário não verificado! Um novo pedido de verificação acaba de ser enviado. Por favor, verifique seu e-mail para completar o cadastro.');
+            throw new ForbiddenException('Usuário não verificado! Um novo pedido de verificação acaba de ser enviado. Por favor, verifique seu e-mail para completar o cadastro.');
         }
 
         // Atribui ao token o ID e o nome de usuário do usuário autenticado

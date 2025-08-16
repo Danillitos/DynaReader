@@ -38,6 +38,13 @@ export default function LoginScreen() {
         // Pega os erros enviados pelo servidor
         catch (error: any) {
             console.error('Erro ao realizar login:', error)
+
+            if (error.response && error.response.status === 403) {
+                setMessage('Usuário não verificado. Por favor, verifique seu e-mail.')
+                setMessageType('error')
+                navigation.navigate('VerifyUserScreen', { email }) // Navega para a tela de verificação
+                return
+            }
             
             if (error.response) {
                 const status = error.response.status
