@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 interface AuthContextType {
     token: string | null
     login: (token: string) => void
     logout: () => void
     isLoggedIn: boolean
+    loading: boolean
 }
 
 interface AuthProviderProps {
@@ -18,26 +19,38 @@ export const AuthContext = createContext<AuthContextType>({
     login: () => {},
     logout: () => {},
     isLoggedIn: false,
+    loading: true
 })
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children}) => {
     const [token, setToken] = useState<string | null>(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const loadToken = async () => {
             const storedToken = await AsyncStorage.getItem('@userToken')
-            if (storedToken && isTokenValid(storedToken)) {
-                setToken(storedToken)
+            console.log('Token carregado do AsyncStorage:', storedToken)
+            try {
+                if (storedToken && isTokenValid(storedToken)) {
+                    setToken(storedToken)
+                }
+                else {
+                    await AsyncStorage.removeItem('@userToken')
+                    setToken(null)
+                }
             }
-            else {
-                await AsyncStorage.removeItem('@userToken')
-                setToken(null)
+            catch (error) {
+                console.error(error)
+            }
+            finally{
+                setLoading(false)
             }
         }
         loadToken()
     }, [])
 
     const login = async (newToken: string) => {
+        console.log('Login called with token:', newToken)
         setToken(newToken)
         await AsyncStorage.setItem('@userToken', newToken)
     }
@@ -58,8 +71,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ token, login, logout, isLoggedIn: !!token }}>
+        <AuthContext.Provider value={{ token, login, logout, isLoggedIn: !!token, loading }}>
             {children}
         </AuthContext.Provider>
     )
 }
+
+export const useAuth = () => useContext(AuthContext);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 export default function HomeScreen() {
-    const route = useRoute();
+    const { token, logout, isLoggedIn } = useContext(AuthContext)
     
 
     return (

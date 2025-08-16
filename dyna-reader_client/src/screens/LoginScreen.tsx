@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types'
 import { loginUser } from '../services/userService'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LottieView from 'lottie-react-native'
 
@@ -14,6 +16,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false)
     const [isloading, setIsLoading] = useState(false)
+    const { login } = useContext(AuthContext)
 
     type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>
     const navigation = useNavigation<NavigationProp>()
@@ -53,9 +56,10 @@ export default function LoginScreen() {
         try {
             const response = await loginUser(email, password)
             console.log(response.data)
+            await login(response.data.token)
             setMessage('Login realizado com sucesso!')
             setMessageType('success')
-            navigation.navigate('HomeScreen', { token: response.data.token }) // Navega para a tela HomeScreen
+            navigation.replace('HomeScreen') // Navega para a tela HomeScreen
         }
         // Pega os erros enviados pelo servidor
         catch (error: any) {

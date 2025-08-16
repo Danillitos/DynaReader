@@ -4,5 +4,5 @@ export type RootStackParamList = {
     ForgotPasswordScreen: undefined
     SignUpScreen: undefined
     VerifyUserScreen: {email: string}
-    HomeScreen: { token: string }
+    HomeScreen: undefined
 }
