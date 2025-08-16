@@ -18,6 +18,14 @@ export default function SignUpScreen() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
+    const passwordCriteria = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    }
+
     const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
 
@@ -96,7 +104,7 @@ export default function SignUpScreen() {
                         { justifyContent: isKeyboardVisible ? 'flex-start' : 'center' }
                     ]}
                     keyboardShouldPersistTaps='handled'
-                    showsVerticalScrollIndicator={false}
+                    showsVerticalScrollIndicator={true}
                 >
                     <View style={[
                         styles.container,
@@ -104,7 +112,7 @@ export default function SignUpScreen() {
                     ]}>
 
                     
-                    <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={[styles.iconButton, {marginTop: 20}]} onPress={() => navigation.goBack()}>
                         <Image
                             source={require("../assets/arrow-back.png")}
                             style={{ width: 30, height: 30, tintColor: "#414A40" }}
@@ -203,6 +211,24 @@ export default function SignUpScreen() {
                         />
                     </TouchableOpacity>
 
+                    <View style={{ marginTop: 16}}>
+                        <Text style={{ color: passwordCriteria.length ? 'green' : 'gray' }}>
+                            • Pelo menos 8 caracteres
+                        </Text>
+                        <Text style={{ color: passwordCriteria.uppercase ? 'green' : 'gray' }}>
+                            • Pelo menos uma letra maiúscula
+                        </Text>
+                        <Text style={{ color: passwordCriteria.lowercase ? 'green' : 'gray'}}>
+                            • Pelo menos uma letra minúscula
+                        </Text>
+                        <Text style={{ color: passwordCriteria.number ? 'green' : 'gray'}}>
+                            • Pelo menos um número
+                        </Text>
+                        <Text style={{ color: passwordCriteria.special ? 'green' : 'gray'}}>
+                            • Pelo menos um caractere especial (!@#$%^&*(),.?":{}|&lt;&gt;)
+                        </Text>
+                    </View>
+
                     <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                         <Text style={styles.buttonText}>Criar conta</Text> 
                     </TouchableOpacity>
@@ -223,7 +249,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        minHeight: '100%',
         padding: 20,
         backgroundColor: '#F2F2F0',
     },
@@ -312,5 +337,10 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingBottom: 40,
+    },
+    line: {
+        flex: 1,
+        height: .01,
+        backgroundColor: '#414A40',
     },
 })

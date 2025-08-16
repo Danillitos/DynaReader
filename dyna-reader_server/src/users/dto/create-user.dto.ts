@@ -29,7 +29,7 @@ export class CreateUserDto {
     @Matches(/(?=.*[a-z])/, { message: 'A senha deve conter ao menos uma letra minúscula.' })
     @Matches(/(?=.*[A-Z])/, { message: 'A senha deve conter ao menos uma letra maiúscula.' })
     @Matches(/(?=.*\d)/, { message: 'A senha deve conter ao menos um número.' })
-    @Matches(/(?=.*[@$!%*?&])/, { message: 'A senha deve conter ao menos um caractere especial (@$!%*?&).' })
+    @Matches(/(?=.*[!@#$%^&*(),.?":{}|<>])/, { message: 'A senha deve conter ao menos um caractere especial (!@#$%^&*(),.?":{}|<>).' })
     @IsNotEmpty({ message: 'A senha não pode estar vazia.' })
     password: string;
 }
