@@ -1,47 +1,100 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function HomeScreen() {
     const { token, logout, isLoggedIn } = useContext(AuthContext)
+
+    const navigation = useNavigation()
+    const height = Dimensions.get('window').height
+
+    const MIN_TRANSLATE_Y = -height * 0.85
+    const MAX_TRANSLATE_Y = 0
+    const startY = useSharedValue(MAX_TRANSLATE_Y)
+    const translateY = useSharedValue(MAX_TRANSLATE_Y)
+
+    const panGesture = Gesture.Pan()
+        .onBegin(() => {
+            startY.value = translateY.value
+        })
+        .onUpdate((event) => {
+            const nextY = startY.value + event.translationY
+            translateY.value = Math.min(MAX_TRANSLATE_Y, Math.max(MIN_TRANSLATE_Y, nextY))
+        })
+        .onEnd(() => {
+            // distância total entre topo e base
+            const distanceTotal = MAX_TRANSLATE_Y - MIN_TRANSLATE_Y;
+            
+            // tolerância pra acionar (20% pra baixo, 20% pra cima)
+            const limiarUp   = MAX_TRANSLATE_Y - distanceTotal * 0.15; 
+            const limiarDown = MIN_TRANSLATE_Y + distanceTotal * 0.3; 
+
+            if (translateY.value <= limiarUp) {
+                // Snap pro topo
+                translateY.value = withSpring(MIN_TRANSLATE_Y, { damping: 50 });
+                
+            }
+            else if (translateY.value >= limiarDown) {
+                // Snap pro rodapé
+                translateY.value = withSpring(MAX_TRANSLATE_Y, { damping: 50 });
+            }
+            else {
+                // Caso contrário, decide pro mais próximo
+                const meio = (MAX_TRANSLATE_Y + MIN_TRANSLATE_Y) / 2;
+                translateY.value = translateY.value < meio
+                ? withSpring(MIN_TRANSLATE_Y, { damping: 50 })
+                : withSpring(MAX_TRANSLATE_Y, { damping: 50 });
+            }
+        })
     
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: translateY.value }]
+    }))
 
     return (
-        <View style={styles.container}>
-            <View style={styles.upperRectangle}>
-                <View style={styles.iconRow}>
-                    <TouchableOpacity>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <View style={styles.container}>
+                <View style={styles.upperRectangle}>
+                    <View style={styles.iconRow}>
+                        <TouchableOpacity>
+                            <Image
+                                source={require('../assets/menu.png')}
+                                style={{ width: 40, height: 40}}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
                         <Image
-                            source={require('../assets/menu.png')}
+                            source={require('../assets/profile.png')}
                             style={{ width: 40, height: 40}}
                         />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                    <Image
-                        source={require('../assets/profile.png')}
-                        style={{ width: 40, height: 40}}
-                    />
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
 
 
-            <View style={styles.circle}>
-                <Text style={styles.dailyObjective}>Meta Diária</Text>
-                <Text style={styles.pagCount}>0/0 Páginas</Text>
-                <Text style={styles.fire}>0 🔥</Text>
-            </View>
+                <View style={styles.circle}>
+                    <Text style={styles.dailyObjective}>Meta Diária</Text>
+                    <Text style={styles.pagCount}>0/0 Páginas</Text>
+                    <Text style={styles.fire}>0 🔥</Text>
+                </View>
 
-            <View style={styles.lowerRectangle}>
-                <Image
-                    source={require('../assets/swipe-up.png')}
-                    style={{ width: 50, height: 50, top: -20 }}
-                />
-                <Text style={styles.bookText}>Livros</Text>
+                <GestureDetector gesture={panGesture}>
+                    <Animated.View style={[ styles.lowerRectangle, animatedStyle ]}>
+                        <Image
+                            source={require('../assets/swipe-up.png')}
+                            style={{ width: 50, height: 50, top: -20 }}
+                        />
+                        <Text style={styles.bookText}>Livros</Text>
+                    </Animated.View>
+                </GestureDetector>
             </View>
-        </View>
+        </GestureHandlerRootView>
     );
 }
 
