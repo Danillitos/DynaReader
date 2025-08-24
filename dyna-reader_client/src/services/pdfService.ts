@@ -1,12 +1,7 @@
 import { useState } from "react";
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
 
-type PdfRef = {
-  uri: string;
-  name: string;
-  base64: string; // novo campo
-};
+type PdfRef = { uri: string; name: string };
 
 export function usePdfService() {
   const [pdfs, setPdfs] = useState<PdfRef[]>([]);
@@ -21,42 +16,23 @@ export function usePdfService() {
 
       if ("canceled" in res) {
         if (res.canceled) return;
-
-        const newFiles: PdfRef[] = [];
-
-        for (const asset of res.assets ?? []) {
-          const name = asset.name || asset.uri.split("/").pop() || "Arquivo sem nome";
-
-          // Lê o arquivo como base64
-          const base64 = await FileSystem.readAsStringAsync(asset.uri, {
-            encoding: FileSystem.EncodingType.Base64,
-          });
-
-          newFiles.push({
-            uri: asset.uri,
-            name,
-            base64,
-          });
-        }
-
+        const newFiles =
+          res.assets?.map((a) => ({
+            uri: a.uri,
+            name: a.name || a.uri.split("/").pop() || "Arquivo sem nome",
+          })) ?? [];
         setPdfs((prev) => [...prev, ...newFiles]);
         return;
       }
 
-      // API antiga (compatibilidade)
+      // API antiga
       const legacy = res as any;
       if (legacy?.type === "success" && legacy?.uri) {
-        const name = legacy.name || legacy.uri.split("/").pop() || "Arquivo sem nome";
-        const base64 = await FileSystem.readAsStringAsync(legacy.uri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-
         setPdfs((prev) => [
           ...prev,
           {
             uri: legacy.uri,
-            name,
-            base64,
+            name: legacy.name || legacy.uri.split("/").pop() || "Arquivo sem nome",
           },
         ]);
       }
