@@ -1,4 +1,3 @@
-// useSwipePanel.ts
 import { Dimensions } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate, Extrapolation } from 'react-native-reanimated';
@@ -40,6 +39,14 @@ export function useSwipePanel() {
             }
         })
     
+    const togglePanel = () => {
+        const isAtBottom = translateY.value === MAX_TRANSLATE_Y
+        translateY.value = withSpring(
+            isAtBottom ? MIN_TRANSLATE_Y : MAX_TRANSLATE_Y,
+            { damping: 50 }
+        )
+    }
+
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: translateY.value }]
     }))
@@ -93,6 +100,7 @@ export function useSwipePanel() {
         animatedStyle,
         arrowAnimatedStyle,
         bookTextAnimatedStyle,
-        height
+        height,
+        togglePanel
     }
 }

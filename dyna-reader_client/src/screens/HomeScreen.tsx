@@ -20,7 +20,8 @@ export default function HomeScreen() {
         animatedStyle,
         arrowAnimatedStyle,
         bookTextAnimatedStyle,
-        height
+        height,
+        togglePanel
     } = useSwipePanel()
 
     return (
@@ -54,11 +55,13 @@ export default function HomeScreen() {
 
                 <GestureDetector gesture={panGesture}>
                     <Animated.View style={[ styles.lowerRectangle, animatedStyle ]}>
-                        <Animated.Image
-                            source={require('../assets/swipe-up.png')}
-                            style={[{ width: 50, height: 50, top: -20 }, arrowAnimatedStyle]}
-                        />
-                        <Animated.Text style={[styles.bookText, bookTextAnimatedStyle]}>Livros</Animated.Text>
+                        <TouchableOpacity onPress={togglePanel}>
+                            <Animated.Image
+                                source={require('../assets/swipe-up.png')}
+                                style={[{ width: 50, height: 50, top: -20 }, arrowAnimatedStyle]}
+                            />
+                            <Animated.Text style={[styles.bookText, bookTextAnimatedStyle]}>Livros</Animated.Text>
+                        </TouchableOpacity>
                     </Animated.View>
                 </GestureDetector>
             </View>
