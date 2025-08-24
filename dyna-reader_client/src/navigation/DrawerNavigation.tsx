@@ -4,6 +4,7 @@ import HomeScreen from "../screens/HomeScreen";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+import DrawerItemSeparator from "../components/drawerItemsSeparator";
 
 interface TokenPayLoad {
     sub: number,
@@ -50,12 +51,33 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={() => handleLogout()}>
-                <Text>Logout</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.version}>Versão 1.0</Text>
-
+            <View style={{flex: 1, alignItems: 'center', width: '100%'}}>
+                <DrawerItemSeparator
+                    label="Pagina Inicial"
+                    onPress={() => props.navigation.closeDrawer()}
+                />
+                <DrawerItemSeparator
+                    label="Configurações"
+                    onPress={() => console.log('Futuramente colocar a pagina de configurações do app.')}
+                />
+                <DrawerItemSeparator
+                    label="Acessibilidade"
+                    onPress={() => console.log('Futuramente colocar a pagina de acessibilidade do app.')}
+                />
+                <DrawerItemSeparator
+                    label="Perfil"
+                    onPress={() => console.log('Futuramente colocar a pagina de perfil do app.')}
+                />
+                <DrawerItemSeparator
+                    label="Créditos"
+                    onPress={() => console.log('Futuramente colocar a pagina de créditos do app.')}
+                />
+                <DrawerItemSeparator
+                    label="Sair"
+                    onPress={handleLogout}
+                    color="red"
+                />
+            </View>
         </View>
     )
 }
@@ -86,10 +108,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontFamily: 'Montserrat_700Bold',
     },
-    version: {
-        fontFamily: 'Montserrat_400Regular',
-        fontSize: 16,
-    },
     logoImage: {
         marginTop: 25,
         width: 70,
@@ -105,5 +123,16 @@ const styles = StyleSheet.create({
     userMessage: {
         fontFamily: 'Montserrat_400Regular',
         fontSize: 16,
+    },
+    drawerItems: {
+        fontFamily: 'Montserrat_400Regular',
+        fontSize: 16,
+    },
+    separator: { 
+        width: '80%',
+        height: 1, 
+        backgroundColor: "#ddd", 
+        marginHorizontal: 10, 
+        margin: 15
     }
 })

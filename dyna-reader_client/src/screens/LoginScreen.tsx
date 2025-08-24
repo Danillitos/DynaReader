@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         fontFamily: 'Montserrat_400Regular',
     },
-        loadingContainer: {
+    loadingContainer: {
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center'
