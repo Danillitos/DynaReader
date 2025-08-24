@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate, Extrapolation } from 'react-native-reanimated';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useSwipePanel } from '../hooks/useSwipePanel';
 import BookList from '../components/bookList'
@@ -11,7 +9,6 @@ import { usePdfService } from '../services/pdfService';
 
 
 export default function HomeScreen() {
-    const { token, logout, isLoggedIn } = useContext(AuthContext)
     const { pdfs, pickPdfs } = usePdfService();
     const navigation = useNavigation()
 
