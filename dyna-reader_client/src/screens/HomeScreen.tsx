@@ -4,7 +4,7 @@ import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-g
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate, Extrapolation } from 'react-native-reanimated';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useSwipePanel } from '../hooks/useSwipePanel';
 import BookList from '../components/bookList'
 import { usePdfService } from '../services/pdfService';
@@ -29,7 +29,7 @@ export default function HomeScreen() {
             <View style={styles.page}>
                 <View style={styles.upperRectangle}>
                     <View style={styles.iconRow}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
                             <Image
                                 source={require('../assets/menu.png')}
                                 style={{ width: 40, height: 40}}

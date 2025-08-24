@@ -1,9 +1,9 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "../screens/HomeScreen";
+import DrawerNavigator from "./DrawerNavigation";
 
 export type AppStackParamList = {
-  HomeScreen: undefined;
+  Drawer: undefined
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator<AppStackParamList>();
 export default function AppStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="Drawer" component={DrawerNavigator} />
     </Stack.Navigator>
   );
 }
