@@ -1,5 +1,6 @@
 import { api } from './api'
 
+// Endpoint Login
 export const loginUser = async (email: string, password: string) => {
     try {
         const response = await api.post('auth/login', { email, password })
@@ -11,6 +12,7 @@ export const loginUser = async (email: string, password: string) => {
     }
 }
 
+// Endpoint Esqueci minha senha
 export const forgotPassword = async (email: string) => {
     try {
         const response = await api.post('auth/forgot-password', {email})
@@ -21,6 +23,7 @@ export const forgotPassword = async (email: string) => {
     }
 }
 
+// Endpoint de criação de conta
 export const signUp = async (email: string, username: string, password: string) => {
     try {
         const response = await api.post('users/signup', {email, username, password})

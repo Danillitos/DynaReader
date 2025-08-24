@@ -2,9 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from './src/context/AuthContext';
 import AuthStack from './src/navigation/AuthStack';
-import AppStack from './src/navigation/AppStack';
 import { useAuth } from './src/context/AuthContext';
 import { ActivityIndicator } from 'react-native';
+import DrawerNavigator from './src/navigation/DrawerNavigation';
 
 
 function RootNavigator() {
@@ -16,7 +16,7 @@ function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <AppStack /> : <AuthStack />}
+      {isLoggedIn ? <DrawerNavigator /> : <AuthStack />}
     </NavigationContainer>
   )
 }
