@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import DrawerItemSeparator from "../components/drawerItemsSeparator";
+import { Alert } from "react-native";
 
 interface TokenPayLoad {
     sub: number,
@@ -23,12 +24,28 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
     }
 
     const handleLogout = () => {
-        logout()
-        props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'LoginScreen' }]
-        })
+        Alert.alert(
+            "Confirmação",
+            "Deseja mesmo sair de sua conta?",
+            [
+                {
+                    text: 'Não',
+                    style: "cancel"
+                },
+                {
+                    text: 'Sim',
+                    style: "destructive",
+                    onPress: () => {
+                        logout()
+                        props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'LoginScreen' }]
+                        })
+                    }
+                }
 
+            ]
+        )
     }
 
 
