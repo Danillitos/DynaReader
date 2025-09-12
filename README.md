@@ -70,7 +70,7 @@ Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina *
 ## 📂 Estrutura do Projeto
 
 ```plaintext
-/client                     # Aplicativo React Native
+/dyna-reader_client                     # Aplicativo React Native
 /dyna-reader_server         # API Nest.js
 /docs                       # Diagramas ERD, UML e artefatos
 .env.example                # Exemplo de variáveis de ambiente
@@ -112,7 +112,7 @@ cd dyna-reader_server
 npm install
 
 # Instale dependências do frontend
-cd ../client
+cd dyna-reader_client
 npm install
 
 # Rode o backend
