@@ -6,7 +6,6 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import { MailService } from 'src/mail/mail.service';
-import { NodeWebSocket } from 'socket.io-client';
 
 @Injectable()
 export class AuthService {
