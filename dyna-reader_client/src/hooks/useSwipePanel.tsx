@@ -18,24 +18,25 @@ export function useSwipePanel() {
             translateY.value = Math.min(MAX_TRANSLATE_Y, Math.max(MIN_TRANSLATE_Y, nextY))
         })
         .onEnd(() => {
-            const distanceTotal = MAX_TRANSLATE_Y - MIN_TRANSLATE_Y;
+            const distanceTotal = Math.abs(MIN_TRANSLATE_Y);
             
-            const limiarUp   = MAX_TRANSLATE_Y - distanceTotal * 0.15; 
-            const limiarDown = MIN_TRANSLATE_Y + distanceTotal * 0.3; 
+            const openThreshold = distanceTotal * 0.7
+            const closeThreshold = distanceTotal * 0.3
 
-            if (translateY.value <= limiarUp) {
-                translateY.value = withSpring(MIN_TRANSLATE_Y, { damping: 50 });
+            const currentPositionFromBottom = Math.abs(translateY.value)
+
+            if (currentPositionFromBottom >= openThreshold) {
+                translateY.value = withSpring(MIN_TRANSLATE_Y);
                 
             }
-            else if (translateY.value >= limiarDown) {
-
-                translateY.value = withSpring(MAX_TRANSLATE_Y, { damping: 50 });
+            else if (currentPositionFromBottom <= closeThreshold) {
+                translateY.value = withSpring(MAX_TRANSLATE_Y);
             }
             else {
-                const meio = (MAX_TRANSLATE_Y + MIN_TRANSLATE_Y) / 2;
-                translateY.value = translateY.value < meio
-                ? withSpring(MIN_TRANSLATE_Y, { damping: 50 })
-                : withSpring(MAX_TRANSLATE_Y, { damping: 50 });
+                const middle = (MAX_TRANSLATE_Y + MIN_TRANSLATE_Y) / 2;
+                translateY.value = translateY.value < middle
+                ? withSpring(MIN_TRANSLATE_Y)
+                : withSpring(MAX_TRANSLATE_Y);
             }
         })
     
@@ -43,7 +44,7 @@ export function useSwipePanel() {
         const isAtBottom = translateY.value === MAX_TRANSLATE_Y
         translateY.value = withSpring(
             isAtBottom ? MIN_TRANSLATE_Y : MAX_TRANSLATE_Y,
-            { damping: 50 }
+            { damping: 95, stiffness: 350 }
         )
     }
 
