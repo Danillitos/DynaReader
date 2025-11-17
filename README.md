@@ -131,4 +131,4 @@ Uso não comercial autorizado para demonstração de habilidades técnicas.
 Danillo M. Garcez
 Dev Fullstack | Mobile | Node.js | React Native
 
-[LinkedIn](www.linkedin.com/in/danillo-matos-garcez-6b4a082aa) • [E-mail](danillo.garcez@live.com)
+[LinkedIn](https://www.linkedin.com/in/danillo-matos-garcez-6b4a082aa) • [E-mail](danillo.garcez@live.com)
