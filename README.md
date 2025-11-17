@@ -1,18 +1,18 @@
-# 📚 DynaReader (Nome Provisório)
+# DynaReader (Nome Provisório)
 
 > **Disclaimer:**  
 > **DynaReader** é um **nome provisório** e **não possui marca registrada** no momento. Este projeto é de uso **educacional/demonstrativo** para fins de **portfólio**.
 
 ---
 
-## ✨ Resumo
+## Resumo
 
 **DynaReader** é um aplicativo **mobile-first** para leitura de PDFs, que visa **estimular o hábito de leitura** de forma divertida e disciplinada.  
 A proposta combina **gamificação**, **metas diárias** e **estatísticas de progresso**, ajudando o usuário a manter constância e disciplina na leitura.
 
 ---
 
-## 🎯 Objetivo
+## Objetivo
 
 - Incentivar a leitura diária.
 - Oferecer métricas como:
@@ -24,7 +24,7 @@ A proposta combina **gamificação**, **metas diárias** e **estatísticas de pr
 
 ---
 
-## 👥 Público-Alvo
+## Público-Alvo
 
 Crianças, adolescentes e adultos que:
 - Querem começar ou fortalecer o hábito de leitura.
@@ -33,30 +33,30 @@ Crianças, adolescentes e adultos que:
 
 ---
 
-## ⚙️ Funcionalidades Principais
+## Funcionalidades Principais
 
-- 📌 Cadastro/Login seguro (autenticação JWT + senha hash)
-- 📌 Perfil de usuário
-- 📌 Leitor de PDF otimizado
-- 📌 Lista pessoal de PDFs
-- 📌 Notificações de lembrete
-- 📌 Estatísticas de leitura
-- 📌 Metas diárias ajustáveis
-- 📌 Sistema de conquistas/badges
-- 📌 Análises semanais e mensais
-- 📌 Modo escuro
-- 📌 Destaque de trechos e anotações
-- 📌 Integração futura com nuvem (Google Drive/Dropbox)
+- Cadastro/Login seguro (autenticação JWT + senha hash)
+- Perfil de usuário
+- Leitor de PDF otimizado
+- Lista pessoal de PDFs
+- Notificações de lembrete
+- Estatísticas de leitura
+- Metas diárias ajustáveis
+- Sistema de conquistas/badges
+- Análises semanais e mensais
+- Modo escuro
+- Destaque de trechos e anotações
+- Integração futura com nuvem (Google Drive/Dropbox)
 
 ---
 
-## 💡 Proposta de Valor
+## Proposta de Valor
 
 Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina **leitura estruturada** com **motivação diária**, transformando o hábito de ler em uma experiência divertida e recompensadora.
 
 ---
 
-## 🧩 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Camada      | Tecnologia |
 |-------------|-------------|
@@ -67,7 +67,7 @@ Inspirado em referências como **Kindle** e **Duolingo**, o DynaReader combina *
 
 ---
 
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```plaintext
 /dyna-reader_client         # Aplicativo React Native (Agora movido para outro repositório)
@@ -86,22 +86,22 @@ README.md                   # Documentação principal
 
 ---
 
-## 🗂️ Diagrama UML
+## Diagrama UML
 
 > ![Software UML _ Mermaid Chart-2025-07-06-123658](https://github.com/user-attachments/assets/8fc2ff3b-e12d-417e-9f03-50dc773cac5e)
 
 
 ---
 
-## 🔗 Documentação da API
+## Documentação da API
 
-> [🚀 Swagger - Acesse aqui](http://localhost:3000/api)
+> [Swagger - Acesse aqui](http://localhost:3000/api)
 
 Obs: O back precisa está rodando
 
 ---
 
-## ✅ Como Rodar Localmente
+## Como Rodar Localmente
 
 ```bash
 # Clone o repositório
@@ -120,14 +120,14 @@ Obs: Configure seu .env seguindo o .env.example antes de rodar o backend
 
 ---
 
-## 📜 Licença
+## Licença
 Este projeto é demonstrativo, de uso acadêmico e para fins de portfólio.
 DynaReader é um nome provisório e não representa uma marca registrada.
 Uso não comercial autorizado para demonstração de habilidades técnicas.
 
 ---
 
-## 🚀 Autor
+## Autor
 Danillo M. Garcez
 Dev Fullstack | Mobile | Node.js | React Native
 
